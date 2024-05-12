@@ -3,7 +3,7 @@ package io.github.mqdev.gestao_vagas.modules.candidate.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.mqdev.gestao_vagas.exceptions.UserAlreadyExistsException;
+import io.github.mqdev.gestao_vagas.exceptions.EntityAlreadyExistsException;
 import io.github.mqdev.gestao_vagas.modules.candidate.CandidateEntity;
 import io.github.mqdev.gestao_vagas.modules.candidate.CandidateRepository;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
