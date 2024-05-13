@@ -1,16 +1,28 @@
 package io.github.mqdev.gestao_vagas.modules.company.useCases;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 
 import io.github.mqdev.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
 public class AuthCompanyUseCase {
+
+    private static final String ISSUER = "MQDev";
+    
+    @Value("${security.jwt.secret}")
+    private String secretKey;
     
     @Autowired
     private CompanyRepository companyRepository;
@@ -18,11 +30,21 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void authCompany(String username, String password) throws AuthenticationException {
+    public String authCompany(String username, String password) throws AuthenticationException {
         var company = companyRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Company not found"));
         
-        if (!passwordEncoder.matches(password, company.getPassword())) {
+        var passwordsMatch = passwordEncoder.matches(password, company.getPassword());
+        if (!passwordsMatch) {
             throw new AuthenticationException();
         }
+
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        var token = JWT.create()
+            .withIssuer(ISSUER)
+            .withSubject(company.getId().toString())
+            .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
+            .sign(algorithm);
+
+        return token;
     }
 }
