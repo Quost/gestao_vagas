@@ -9,7 +9,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 @Service
 public class JWTProvider {
 
-    @Value("${security.jwt.secret}")
+    @Value("${security.jwt.secret.company}")
     private String secretKey;
 
     public String validateToken(String token) {
