@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.mqdev.gestao_vagas.modules.company.dto.CreateJobDTO;
 import io.github.mqdev.gestao_vagas.modules.company.entities.JobEntity;
 import io.github.mqdev.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +23,18 @@ public class JobController {
     private CreateJobUseCase createJobUseCase;
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody JobEntity jobEntity, HttpServletRequest request) {
+    public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO CreateJobDTO, HttpServletRequest request) {
         var companyId = request.getAttribute("company_id");
-        jobEntity.setCompanyId((UUID.fromString(companyId.toString())));
+
+        var jobEntity = JobEntity.builder()
+            .description(CreateJobDTO.getDescription())
+            .benefits(CreateJobDTO.getBenefits())
+            .requirements(CreateJobDTO.getRequirements())
+            .salary(CreateJobDTO.getSalary())
+            .location(CreateJobDTO.getLocation())
+            .level(CreateJobDTO.getLevel())
+            .companyId(UUID.fromString(companyId.toString()))
+            .build();
 
         try {
             var result = this.createJobUseCase.execute(jobEntity);
