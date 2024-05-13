@@ -18,11 +18,12 @@ import io.github.mqdev.gestao_vagas.modules.company.repositories.CompanyReposito
 
 @Service
 public class AuthCompanyUseCase {
-
-    private static final String ISSUER = "MQDev";
     
-    @Value("${security.jwt.secret}")
+    @Value("${security.jwt.secret.company}")
     private String secretKey;
+
+    @Value("${security.jwt.issuer}")
+    private String issuer;
     
     @Autowired
     private CompanyRepository companyRepository;
@@ -40,7 +41,7 @@ public class AuthCompanyUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var token = JWT.create()
-            .withIssuer(ISSUER)
+            .withIssuer(issuer)
             .withSubject(company.getId().toString())
             .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
             .sign(algorithm);
