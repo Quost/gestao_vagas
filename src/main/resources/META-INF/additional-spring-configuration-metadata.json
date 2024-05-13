@@ -1,5 +1,19 @@
-{"properties": [{
-  "name": "security.jwt.secret",
-  "type": "java.lang.String",
-  "description": "A description for 'security.jwt.secret'"
-}]}
+{
+  "properties": [
+    {
+      "name": "security.jwt.secret.candidate",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.secret.candidate'"
+    },
+    {
+      "name": "security.jwt.secret.company",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.secret.company'"
+    },
+    {
+      "name": "security.jwt.issuer",
+      "type": "java.lang.String",
+      "description": "A description for 'security.jwt.issuer'"
+    }
+  ]
+}
