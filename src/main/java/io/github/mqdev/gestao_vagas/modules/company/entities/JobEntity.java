@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity(name = "job")
@@ -22,11 +23,19 @@ public class JobEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String title;
+
+    @Column(length = 1000)
     private String description;
+
+    @Column(length = 1000)
     private String benefits;
+
+    @Column(length = 1000)
     private String requirements;
     private String salary;
     private String location;
+
+    @NotBlank(message = "Level should not be blank")
     private String level;
 
     @ManyToOne()

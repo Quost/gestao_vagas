@@ -9,6 +9,7 @@ import io.github.mqdev.gestao_vagas.modules.company.repositories.CompanyReposito
 
 @Service
 public class CreateCompanyUseCase {
+    
     @Autowired
     private CompanyRepository companyRepository;
 
