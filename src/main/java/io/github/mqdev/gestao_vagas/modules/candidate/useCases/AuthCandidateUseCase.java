@@ -57,10 +57,10 @@ public class AuthCandidateUseCase {
                 .sign(algorithm);
 
         var authCandidateResponseDTO = AuthCandidateResponseDTO
-        .builder()
-        .access_token(token)
-        .expires_at(expiration.toEpochMilli())
-        .build();
+                .builder()
+                .access_token(token)
+                .expires_at(expiration.toEpochMilli())
+                .build();
 
         return authCandidateResponseDTO;
 
