@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     @Autowired
-    private SecurityFilter securityFilter;
+    private SecurityCompanyFilter securityFilter;
 
     @Autowired
     private SecurityCandidateFilter securityCandidateFilter;
