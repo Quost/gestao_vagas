@@ -7,7 +7,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
 @Service
-public class JWTProvider {
+public class JWTCompanyProvider {
 
     @Value("${security.jwt.secret.company}")
     private String secretKey;
