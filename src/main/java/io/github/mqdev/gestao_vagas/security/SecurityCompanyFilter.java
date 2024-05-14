@@ -27,12 +27,11 @@ public class SecurityCompanyFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        SecurityContextHolder.getContext().setAuthentication(null);
         String header = request.getHeader("Authorization");
 
         if (request.getRequestURI().startsWith("/company")) {
             if (header != null) {
-                System.out.println("Token found: " + header);
+                System.out.println("Company token found: " + header);
                 if (!header.startsWith("Bearer ")) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 }
