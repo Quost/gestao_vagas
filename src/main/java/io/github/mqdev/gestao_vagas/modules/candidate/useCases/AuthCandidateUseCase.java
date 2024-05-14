@@ -52,7 +52,7 @@ public class AuthCandidateUseCase {
         var token = JWT.create()
                 .withIssuer(secretKey)
                 .withSubject(candidate.getId().toString())
-                .withClaim("roles", Arrays.asList("candidate"))
+                .withClaim("roles", Arrays.asList("CANDIDATE"))
                 .withExpiresAt(expiration)
                 .sign(algorithm);
 
