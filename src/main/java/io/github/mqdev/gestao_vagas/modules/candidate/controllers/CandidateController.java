@@ -9,6 +9,13 @@ import io.github.mqdev.gestao_vagas.modules.candidate.useCases.CreateCandidateUs
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
 import io.github.mqdev.gestao_vagas.modules.company.entities.JobEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -60,6 +67,15 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidato", description = "Endpoints para candidatos")
+    @Operation(summary = "Listar vagas disponíveis para candidatos", description = "Lista todas as vagas de acordo com o filtro")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", content = {
+            @Content(
+                array = @ArraySchema(schema = @Schema(implementation = JobEntity.class))
+            )
+        }, description = "Vagas encontradas"),
+    })
     public List<JobEntity> findJobByFilter(@RequestParam String filter) {
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
