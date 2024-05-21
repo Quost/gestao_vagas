@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.mqdev.gestao_vagas.modules.candidate.CandidateEntity;
+import io.github.mqdev.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -55,6 +56,15 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidato", description = "Endpoints para candidatos")
+    @Operation(summary = "Perfil do candidato", description = "Retorna o perfil do candidato")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = ProfileCandidateResponseDTO.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Usuário não encontrado"),
+    })
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
         var candidateId = request.getAttribute("candidate_id");
 
@@ -71,11 +81,9 @@ public class CandidateController {
     @Tag(name = "Candidato", description = "Endpoints para candidatos")
     @Operation(summary = "Listar vagas disponíveis para candidatos", description = "Lista todas as vagas de acordo com o filtro")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", content = {
-            @Content(
-                array = @ArraySchema(schema = @Schema(implementation = JobEntity.class))
-            )
-        }, description = "Vagas encontradas"),
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+            }, description = "Vagas encontradas"),
     })
     @SecurityRequirement(name = "jwt_auth")
     public List<JobEntity> findJobByFilter(@RequestParam String filter) {
