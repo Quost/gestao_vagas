@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.mqdev.gestao_vagas.modules.candidate.CandidateEntity;
 import io.github.mqdev.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
+import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ApplyJobUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import io.github.mqdev.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -44,6 +45,9 @@ public class CandidateController {
 
     @Autowired
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
+
+    @Autowired
+    private ApplyJobUseCase applyJobUseCase;
 
     @PostMapping("/")
     @Operation(summary = "Cadastrar candidato", description = "Cadastrar um novo candidato")
@@ -94,5 +98,20 @@ public class CandidateController {
     @SecurityRequirement(name = "jwt_auth")
     public List<JobEntity> findJobByFilter(@RequestParam String filter) {
         return this.listAllJobsByFilterUseCase.execute(filter);
+    }
+
+    @PostMapping("/job/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(summary = "Candidatar-se a uma vaga", description = "Realiza a inscrição do candidato em uma vaga")
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId) {
+        var candidateId = request.getAttribute("candidate_id");
+
+        try {
+            var result = this.applyJobUseCase.execute(UUID.fromString(candidateId.toString()), jobId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
