@@ -28,6 +28,7 @@ public class CompanyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    
     private String name;
 
     @Email(message = "Email should be valid")
