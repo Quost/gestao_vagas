@@ -1,9 +1,15 @@
 package io.github.mqdev.gestao_vagas.modules.company.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateJobDTO {
     @Schema(description = "Título da vaga", example = "Desenvolvedor Java", required = true)
     private String title;
