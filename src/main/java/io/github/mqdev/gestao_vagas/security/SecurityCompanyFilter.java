@@ -1,7 +1,7 @@
 package io.github.mqdev.gestao_vagas.security;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,29 +33,39 @@ public class SecurityCompanyFilter extends OncePerRequestFilter {
         if (request.getRequestURI().startsWith("/company")) {
             if (header != null) {
                 System.out.println("Company token found: " + header);
-                if (!header.startsWith("Bearer ")) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                }
 
-                var token = this.jwtProvider.validateToken(header);
+                try {
 
-                if (token == null) {
+                    var token = this.jwtProvider.validateToken(header);
+
+                    if (token == null) {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                        return;
+                    }
+
+                    var roles = token.getClaim("roles").asList(String.class);
+
+                    if (roles == null) {
+                        roles = new ArrayList<>();
+                    }
+
+                    var authorities = roles.stream()
+                            .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                            .toList();
+
+                    request.setAttribute("company_id", token.getSubject());
+
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                            token.getSubject(),
+                            null, authorities);
+
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                } catch (Exception e) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
-
-                var roles = token.getClaim("roles").asList(String.class);
-                var authorities = roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .toList();
-
-                request.setAttribute("company_id", token.getSubject());
-
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(token.getSubject(),
-                        null, authorities);
-
-                SecurityContextHolder.getContext().setAuthentication(auth);
             }
+
         }
 
         filterChain.doFilter(request, response);
