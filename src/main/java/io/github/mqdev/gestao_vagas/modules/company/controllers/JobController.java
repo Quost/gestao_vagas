@@ -35,27 +35,24 @@ public class JobController {
     @Tag(name = "Vagas", description = "Endpoints para vagas")
     @Operation(summary = "Cadastrar vagas disponíveis", description = "Cadastrar vagas disponíveis de uma empresa")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", content = {
-            @Content(
-                schema = @Schema(implementation = JobEntity.class)
-            )
-        }, description = "Vagas encontradas"),
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(schema = @Schema(implementation = JobEntity.class))
+            }, description = "Vagas encontradas"),
     })
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> create(@Valid @RequestBody CreateJobDTO CreateJobDTO, HttpServletRequest request) {
-        var companyId = request.getAttribute("company_id");
-
-        var jobEntity = JobEntity.builder()
-            .description(CreateJobDTO.getDescription())
-            .benefits(CreateJobDTO.getBenefits())
-            .requirements(CreateJobDTO.getRequirements())
-            .salary(CreateJobDTO.getSalary())
-            .location(CreateJobDTO.getLocation())
-            .level(CreateJobDTO.getLevel())
-            .companyId(UUID.fromString(companyId.toString()))
-            .build();
-
+        var companyId = request.getAttribute("company_id");        
         try {
+            var jobEntity = JobEntity.builder()
+                    .description(CreateJobDTO.getDescription())
+                    .benefits(CreateJobDTO.getBenefits())
+                    .requirements(CreateJobDTO.getRequirements())
+                    .salary(CreateJobDTO.getSalary())
+                    .location(CreateJobDTO.getLocation())
+                    .level(CreateJobDTO.getLevel())
+                    .companyId(UUID.fromString(companyId.toString()))
+                    .build();
+
             var result = this.createJobUseCase.execute(jobEntity);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
