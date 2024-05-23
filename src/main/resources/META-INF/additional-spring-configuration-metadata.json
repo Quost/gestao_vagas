@@ -1,19 +1,22 @@
-{
-  "properties": [
-    {
-      "name": "security.jwt.secret.candidate",
-      "type": "java.lang.String",
-      "description": "A description for 'security.jwt.secret.candidate'"
-    },
-    {
-      "name": "security.jwt.secret.company",
-      "type": "java.lang.String",
-      "description": "A description for 'security.jwt.secret.company'"
-    },
-    {
-      "name": "security.jwt.issuer",
-      "type": "java.lang.String",
-      "description": "A description for 'security.jwt.issuer'"
-    }
-  ]
-}
+{"properties": [
+  {
+    "name": "security.jwt.secret.candidate",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.secret.candidate'"
+  },
+  {
+    "name": "security.jwt.secret.company",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.secret.company'"
+  },
+  {
+    "name": "security.jwt.issuer",
+    "type": "java.lang.String",
+    "description": "A description for 'security.jwt.issuer'"
+  },
+  {
+    "name": "spring.datasourse.driver-class-name",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.datasourse.driver-class-name'"
+  }
+]}
