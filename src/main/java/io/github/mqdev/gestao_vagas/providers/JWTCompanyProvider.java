@@ -21,7 +21,6 @@ public class JWTCompanyProvider {
         try {
             return JWT.require(algorithm).build().verify(token);
         } catch (Exception ex) {
-            ex.printStackTrace();
             return null;
         }
     }
