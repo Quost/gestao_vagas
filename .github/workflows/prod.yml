@@ -1,0 +1,19 @@
+name: gestao_vagas Application
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Set up JAVA
+              uses: actions/setup-java@v2
+              with:
+                  distribution: temurin
+                  java-version: 17
