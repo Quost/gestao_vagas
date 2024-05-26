@@ -47,12 +47,14 @@ public class AuthCandidateUseCase {
             throw new AuthenticationException("Username or password incorrect");
         }
 
+        var roles = Arrays.asList("CANDIDATE");
+
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var expiration = Instant.now().plus(Duration.ofMinutes(10));
         var token = JWT.create()
                 .withIssuer(secretKey)
                 .withSubject(candidate.getId().toString())
-                .withClaim("roles", Arrays.asList("CANDIDATE"))
+                .withClaim("roles", roles)
                 .withExpiresAt(expiration)
                 .sign(algorithm);
 
@@ -60,6 +62,7 @@ public class AuthCandidateUseCase {
                 .builder()
                 .access_token(token)
                 .expires_at(expiration.toEpochMilli())
+                .roles(roles)
                 .build();
 
         return authCandidateResponseDTO;
