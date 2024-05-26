@@ -61,7 +61,7 @@ public class AuthCandidateUseCase {
         var authCandidateResponseDTO = AuthCandidateResponseDTO
                 .builder()
                 .access_token(token)
-                .expires_at(expiration.toEpochMilli())
+                .expires_in(expiration.toEpochMilli())
                 .roles(roles)
                 .build();
 

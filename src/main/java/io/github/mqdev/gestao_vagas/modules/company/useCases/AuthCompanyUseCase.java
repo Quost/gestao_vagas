@@ -57,7 +57,7 @@ public class AuthCompanyUseCase {
         var authCompanyResponseDTO = AuthCompanyResponseDTO
         .builder()
                 .access_token(token)
-                .expires_at(expiration)
+                .expires_in(expiration)
                 .roles(roles)
                 .build();
 
