@@ -42,19 +42,23 @@ public class AuthCompanyUseCase {
             throw new AuthenticationException();
         }
 
+        var roles = Arrays.asList("COMPANY");
+
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var token = JWT.create()
                 .withIssuer(issuer)
                 .withSubject(company.getId().toString())
                 .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
-                .withClaim("roles", Arrays.asList("COMPANY"))
+                .withClaim("roles", roles)
                 .sign(algorithm);
 
         var expiration = Instant.now().plus(Duration.ofHours(2)).toEpochMilli();
 
-        var authCompanyResponseDTO = AuthCompanyResponseDTO.builder()
+        var authCompanyResponseDTO = AuthCompanyResponseDTO
+        .builder()
                 .access_token(token)
                 .expires_at(expiration)
+                .roles(roles)
                 .build();
 
         return authCompanyResponseDTO;
