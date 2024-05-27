@@ -15,7 +15,6 @@ import io.github.mqdev.gestao_vagas.modules.company.dto.CreateJobDTO;
 import io.github.mqdev.gestao_vagas.modules.company.entities.JobEntity;
 import io.github.mqdev.gestao_vagas.modules.company.useCases.CreateJobUseCase;
 import io.github.mqdev.gestao_vagas.modules.company.useCases.ListAllJobsByCompanyUseCase;
-import io.micrometer.core.ipc.http.HttpSender.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
